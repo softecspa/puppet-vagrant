@@ -4,11 +4,13 @@ class vagrant (
 ) {
   
   case $::operatingsystem {
-    "windows":  {
+    'windows':  {
       $source           = "https://dl.bintray.com/mitchellh/vagrant/vagrant_${version}.msi"
       $filename         = "${tmp_dir}\\vagrant_${version}.msi"
-      $provider         = "windows"
-      $install_options  = [ "--silent" ]
+      $provider         = 'windows'
+      $install_options  = [ '--silent' ]
+      $pkg_name         = 'Vagrant'
+      $ensure           = 'installed'
 
 
       cygwin::wget {$source:
@@ -16,10 +18,16 @@ class vagrant (
         before  => Package["Vagrant"],
       }
     }
+    'ubuntu': {
+      $filename = undef
+      $ensure   = 'latest'
+      $provider = 'apt'
+      $pkg_name = 'vagrant'
+    }
   }
 
-  package {"Vagrant":
-    ensure          => installed,
+  package {$pkg_name:
+    ensure          => $ensure,
     source          => $filename,
     provider        => $provider,
   }
