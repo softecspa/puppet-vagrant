@@ -19,7 +19,7 @@
 # Copyright 2014 Softec SpA
 #
 class vagrant (
-  $version      = '1.6.2',
+  $version      = '1.6.3',
   $tmp_dir      = ''
 ) {
 
@@ -44,19 +44,28 @@ class vagrant (
         path    => $filename,
         before  => Package["Vagrant"],
       }
+
+      package {$pkg_name:
+        ensure          => $ensure,
+        source          => $filename,
+        provider        => $provider,
+      }
     }
     'ubuntu': {
       $filename = undef
       $ensure   = 'latest'
       $provider = 'apt'
       $pkg_name = 'vagrant'
+
+      $arch = $::architecture?{
+        'i386'  => 'i686',
+        'amd64' => 'x86_64'
+      }
+
+      deb::from_url {'vagrant':
+        url     => "https://dl.bintray.com/mitchellh/vagrant/vagrant_${version}_${arch}.deb",
+        version => "1:${version}"
+      }
     }
   }
-
-  package {$pkg_name:
-    ensure          => $ensure,
-    source          => $filename,
-    provider        => $provider,
-  }
-
 }
