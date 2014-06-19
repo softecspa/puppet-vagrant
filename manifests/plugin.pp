@@ -22,7 +22,9 @@ define vagrant::plugin (
     }
     'windows': {
       $install_command="vagrant plugin install $plugin_name"
-      $unless="[bool](vagrant plugin list | Select-String '$plugin_name')"
+      #TODO: ritorna sempre True. imposto ad Undef ma da rivedere
+      #$unless="[bool](vagrant plugin list | Select-String '$plugin_name')"
+      $unless=undef
       $provider=powershell
       $path="C:\\HashiCorp\\Vagrant\\bin;${::path}"
 
