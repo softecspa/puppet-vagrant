@@ -26,8 +26,6 @@ class vagrant (
   case $::operatingsystem {
     'windows':  {
 
-      require powershell
-
       if $tmp_dir == '' {
         fail('in windows tmp_dir is mandatory')
       }
