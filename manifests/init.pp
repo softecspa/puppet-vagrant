@@ -26,7 +26,7 @@ class vagrant (
   case $::operatingsystem {
     'windows':  {
 
-      require cygwin
+      require powershell
 
       if $tmp_dir == '' {
         fail('in windows tmp_dir is mandatory')
@@ -40,9 +40,11 @@ class vagrant (
       $ensure           = 'installed'
 
 
-      cygwin::wget {$source:
-        path    => $filename,
-        before  => Package["Vagrant"],
+      exec {'download vagrant':
+        command   => "\$(New-Object System.Net.WebClient).DownloadFile('$source','$file')",
+        before    => Package[$pkg_name],
+        path      => $::path,
+        provider  => powershell
       }
 
       package {$pkg_name:

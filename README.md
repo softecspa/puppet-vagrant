@@ -29,7 +29,7 @@ This module manage installation of vagrant. It work and it's tested on:
 
 ###Setup Requirements
 in windows it require modules:
- * softecspa/puppet-cygwin
+ * softecspa/puppetlabs-powershell
 
 In Ubuntu no dependencies are present
 
