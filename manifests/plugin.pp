@@ -13,6 +13,7 @@ define vagrant::plugin (
       $install_command="vagrant plugin install $plugin_name"
       $unless="vagrant plugin list | grep '$plugin_name'"
       $provider=undef
+      $path=$::path
 
       $env_librarian = $home? {
         ''      => undef,
@@ -23,6 +24,7 @@ define vagrant::plugin (
       $install_command="vagrant plugin install $plugin_name"
       $unless="[bool](vagrant plugin list | Select-String '$plugin_name')"
       $provider=powershell
+      $path="C:\\HashiCorp\\Vagrant\\bin;${::path}"
 
       $env_librarian = undef
     }
@@ -32,7 +34,7 @@ define vagrant::plugin (
     command     => $install_command,
     unless      => $unless,
     provider    => $provider,
-    path        => $::path,
+    path        => $path,
     environment => $env_librarian
   }
 
