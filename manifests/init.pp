@@ -39,7 +39,8 @@ class vagrant (
 
 
       exec {'download vagrant':
-        command   => "\$(New-Object System.Net.WebClient).DownloadFile('$source','$file')",
+        command   => "\$(New-Object System.Net.WebClient).DownloadFile('$source','$filename')",
+        creates   => $filename,
         before    => Package[$pkg_name],
         path      => $::path,
         provider  => powershell
